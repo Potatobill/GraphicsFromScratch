@@ -11,7 +11,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class Panel extends JPanel implements MouseMotionListener {
+public class Panel extends JPanel {
 
     private ArrayList<Shape> shapes;
 
@@ -22,13 +22,12 @@ public class Panel extends JPanel implements MouseMotionListener {
 
         shapes = new ArrayList<>();
 
-        addMouseMotionListener(this);
-
         ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
         Runnable refresh = new Runnable() {
             @Override
             public void run() {
                 repaint();
+                moveMouse();
             }
         };
         executor.scheduleAtFixedRate(refresh, 10, 10,  TimeUnit.MILLISECONDS);
@@ -57,18 +56,16 @@ public class Panel extends JPanel implements MouseMotionListener {
     }
 
 
-    @Override
-    public void mouseDragged(MouseEvent e) {
+    public void mouseDragged() {
 
     }
 
-    @Override
-    public void mouseMoved(MouseEvent e) {
+    public void moveMouse() {
 
         try {
-            //moves mouse to the middle of the screen
+
             new Robot().mouseMove((int) Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 2, (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() / 2);
-            //remember to use try-catch block (always, and remember to delete this)
+
         } catch (AWTException ex) {
             ex.printStackTrace();
         }
